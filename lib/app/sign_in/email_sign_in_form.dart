@@ -1,11 +1,13 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/app/sign_in/validators.dart';
+import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 
-enum EmailSignInFormType {signIn, register}
+enum EmailSignInFormType { signIn, register }
 
 class EmailSignInForm extends StatefulWidget {
-
   final AuthBase auth;
   const EmailSignInForm({Key key, @required this.auth}) : super(key: key);
 
@@ -13,8 +15,8 @@ class EmailSignInForm extends StatefulWidget {
   _EmailSignInFormState createState() => _EmailSignInFormState();
 }
 
-class _EmailSignInFormState extends State<EmailSignInForm> with EmailAndPasswordValidators {
-
+class _EmailSignInFormState extends State<EmailSignInForm>
+    with EmailAndPasswordValidators {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
@@ -48,16 +50,23 @@ class _EmailSignInFormState extends State<EmailSignInForm> with EmailAndPassword
       }
       Navigator.of(context).pop();
     } catch (e) {
-      print(e.toString());
+      showAlertDialog(
+        context,
+        title: 'Sign in failed',
+        content: e.toString(),
+        defaultActionText: 'OK',
+      );
     } finally {
       _loading = false;
     }
   }
 
-  void _changeForm () {
+  void _changeForm() {
     setState(() {
       _submitted = false;
-      _formType = _formType == EmailSignInFormType.signIn ? EmailSignInFormType.register : EmailSignInFormType.signIn;
+      _formType = _formType == EmailSignInFormType.signIn
+          ? EmailSignInFormType.register
+          : EmailSignInFormType.signIn;
     });
     _emailController.clear();
     _passwordController.clear();
@@ -68,11 +77,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> with EmailAndPassword
   }
 
   List<Widget> _buildChildren() {
-
-    final String primaryText = _formType == EmailSignInFormType.signIn ?
-      'Sign in' : 'Create an account';
-    final String secondaryText = _formType == EmailSignInFormType.signIn ?
-      'Need an account? Register' : 'Have an account? Sign in';
+    final String primaryText = _formType == EmailSignInFormType.signIn
+        ? 'Sign in'
+        : 'Create an account';
+    final String secondaryText = _formType == EmailSignInFormType.signIn
+        ? 'Need an account? Register'
+        : 'Have an account? Sign in';
     bool emailValid = emailValidator.isValid(_email);
     bool passwordValid = passwordValidator.isValid(_password);
     bool submitEnabled = !_loading && emailValid && passwordValid;
