@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/app/sign_in/validators.dart';
 import 'package:time_tracker/common_widgets/show_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
-import 'package:time_tracker/services/auth_provider.dart';
 
 enum EmailSignInFormType { signIn, register }
 
@@ -42,9 +42,9 @@ class _EmailSignInFormState extends State<EmailSignInForm>
     });
     try {
       if (_formType == EmailSignInFormType.signIn) {
-        await AuthProvider.of(context).signInEmail(_email, _password);
+        await Provider.of<AuthBase>(context, listen: false).signInEmail(_email, _password);
       } else {
-        await AuthProvider.of(context).createUserEmail(_email, _password);
+        await Provider.of<AuthBase>(context, listen: false).createUserEmail(_email, _password);
       }
       Navigator.of(context).pop();
     } catch (e) {
