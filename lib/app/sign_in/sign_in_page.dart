@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/app/sign_in/email_sign_in.dart';
-import 'package:time_tracker/app/sign_in/sign_in_bloc.dart';
-import 'package:time_tracker/app/sign_in/sign_in_button.dart';
-import 'package:time_tracker/app/sign_in/social_sign_in_button.dart';
+import 'package:time_tracker/app/sign_in/business_logic/sign_in_bloc.dart';
+import 'package:time_tracker/common_widgets/sign_in_button.dart';
+import 'package:time_tracker/common_widgets/social_sign_in_button.dart';
 import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 
@@ -13,8 +13,10 @@ class SignInPage extends StatelessWidget {
   final SignInBloc bloc;
 
   static Widget create(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     return Provider<SignInBloc>(
-      create: (_) => SignInBloc(),
+      create: (_) => SignInBloc(auth: auth),
+      dispose: (_, bloc) => bloc.dispose(),
       child: Consumer<SignInBloc>(
         builder: (_, bloc, __) => SignInPage(bloc: bloc),
       ),
@@ -33,36 +35,26 @@ class SignInPage extends StatelessWidget {
   }
 
   Future _signInAnon(BuildContext context) async {
-    bloc.setIsLoading(true);
     try {
-      await Provider.of<AuthBase>(context, listen: false).signInAnonymously();
+      await bloc.signInAnon();
     } catch (e) {
       _showSignInError(context, e);
-    }
-    finally {
-      bloc.setIsLoading(false);
     }
   }
 
   Future _signInGoogle(BuildContext context) async {
-    bloc.setIsLoading(true);
     try {
-      await Provider.of<AuthBase>(context, listen: false).signInGoogle();
+      await bloc.signInGoogle();
     } catch (e) {
       _showSignInError(context, e);
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
   Future _signInFB(BuildContext context) async {
-    bloc.setIsLoading(true);
     try {
-      await Provider.of<AuthBase>(context, listen: false).signInFB();
+      await bloc.signInFB();
     } catch (e) {
       _showSignInError(context, e);
-    } finally {
-      bloc.setIsLoading(false);
     }
   }
 
