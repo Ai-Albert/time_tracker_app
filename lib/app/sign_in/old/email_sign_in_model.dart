@@ -30,10 +30,6 @@ class EmailSignInModel with EmailAndPasswordValidators{
         : 'Have an account? Sign in';
   }
 
-  bool get canSubmit {
-
-  }
-
   EmailSignInModel copyWith({
     String email,
     String password,

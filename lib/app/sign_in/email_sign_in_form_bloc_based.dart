@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker/app/sign_in/business_logic/email_sign_in_bloc.dart';
 import 'package:time_tracker/common_widgets/show_exception_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
-import 'email_sign_in_model.dart';
+import 'old/email_sign_in_model.dart';
 
 class EmailSignInFormBlocBased extends StatefulWidget {
   const EmailSignInFormBlocBased({Key key, @required this.bloc}) : super(key: key);
