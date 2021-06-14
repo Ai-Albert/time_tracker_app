@@ -16,7 +16,7 @@ class AddJobPage extends StatefulWidget {
    * for onPressed since onPressed requires a function and AddJobPage is a Widget
    */
   static Future<void> show(BuildContext context, {Database database, Job job}) async {
-    await Navigator.of(context).push(
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => AddJobPage(database: database, job: job),
         fullscreenDialog: true,
