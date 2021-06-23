@@ -7,6 +7,10 @@ import 'package:time_tracker/services/auth.dart';
 import 'package:time_tracker/services/database.dart';
 
 class LandingPage extends StatelessWidget {
+  const LandingPage({Key key, @required this.databaseBuilder}) : super(key: key);
+
+  // Use this instead of just writing database in code for testing w/ mock database
+  final Database Function(String) databaseBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class LandingPage extends StatelessWidget {
             return SignInPage.create(context);
           }
           return Provider<Database>(
-            create: (_) => FirestoreDatabase(uid: user.uid),
+            create: (_) => databaseBuilder(user.uid),
             child: HomePage(),
           );
         }

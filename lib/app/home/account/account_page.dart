@@ -8,7 +8,7 @@ import 'package:time_tracker/services/auth.dart';
 class AccountPage extends StatelessWidget {
   const AccountPage({Key key}) : super(key: key);
 
-  Future _signOut(BuildContext context) async {
+  Future<void> _signOut(BuildContext context) async {
     try {
       await Provider.of<AuthBase>(context, listen: false).signOut();
     } catch (e) {

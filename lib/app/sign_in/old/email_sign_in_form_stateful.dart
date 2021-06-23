@@ -8,6 +8,11 @@ import 'package:time_tracker/services/auth.dart';
 import 'email_sign_in_model.dart';
 
 class EmailSignInFormStateful extends StatefulWidget {
+  const EmailSignInFormStateful({Key key, this.onSignedIn}) : super(key: key);
+
+  // If used, we would pass Navigator.pop() to this but we have this to make the class easier to test
+  final VoidCallback onSignedIn;
+
   @override
   _EmailSignInFormStatefulState createState() => _EmailSignInFormStatefulState();
 }
@@ -52,7 +57,9 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful>
       } else {
         await Provider.of<AuthBase>(context, listen: false).createUserEmail(_email, _password);
       }
-      Navigator.of(context).pop();
+      if (widget.onSignedIn != null) {
+        widget.onSignedIn();
+      }
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
@@ -95,7 +102,9 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful>
     bool showPasswordError = _submitted && !passwordValid;
 
     return [
+      // Using keys is a good way of referencing widgets in tests
       TextField(
+        key: Key('email'),
         decoration: InputDecoration(
           labelText: 'Email',
           hintText: 'test@test.com',
@@ -110,6 +119,7 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful>
       ),
       SizedBox(height: 8.0),
       TextField(
+        key: Key('password'),
         decoration: InputDecoration(
           labelText: 'Password',
           errorText: showPasswordError ? 'Password can\'t be empty' : null,

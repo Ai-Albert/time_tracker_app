@@ -83,6 +83,7 @@ class _EntryPageState extends State<EntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         elevation: 2.0,
         title: Text(widget.job.name),
@@ -96,6 +97,7 @@ class _EntryPageState extends State<EntryPage> {
           )
         ],
       ),
+
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16.0),
